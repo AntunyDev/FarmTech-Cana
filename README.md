@@ -1,4 +1,4 @@
-# 🚜 FarmTech Cana - Sistema de Gestão de Colheitas
+# 🚜 FarmTech Cana - Sistema de Gestão de Colheitas de Cana-de-açúcar
 
 Bem-vindo ao **FarmTech Cana**, uma solução robusta e moderna desenvolvida para otimizar o monitoramento e a gestão de colheitas de cana-de-açúcar. O sistema foca no acompanhamento de produtividade e na análise detalhada de perdas, permitindo uma tomada de decisão baseada em dados reais.
 

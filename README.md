@@ -1,91 +1,74 @@
-# 🚜 FarmTech Cana - Sistema de Gestão de Colheitas de Cana-de-açúcar
+# 🚜 FarmTech Cana - Inteligência na Gestão de Colheitas
 
-Bem-vindo ao **FarmTech Cana**, uma solução robusta e moderna desenvolvida para otimizar o monitoramento e a gestão de colheitas de cana-de-açúcar. O sistema foca no acompanhamento de produtividade e na análise detalhada de perdas, permitindo uma tomada de decisão baseada em dados reais.
+## 📋 Contexto e Problema
 
----
+O Brasil é o líder mundial na produção de cana-de-açúcar, alcançando recordes que ultrapassam **620 milhões de toneladas** por safra. No entanto, o setor enfrenta um desafio crítico: **as perdas na colheita**.
 
-## 🌟 Funcionalidades Principais
+Estudos indicam que, enquanto na colheita manual as perdas raramente passam de **5%**, na colheita mecânica esse índice sobe drasticamente para **15%**. Esse gap de produtividade representa um prejuízo astronômico: apenas no estado de São Paulo, estima-se uma perda anual de **R$ 20 milhões**.
 
-### 🏷️ Gestão de Talhões
-- Cadastro detalhado de áreas de plantio (hectares, variedade da cana, município, ano de plantio).
-- Identificação única via UUID simplificado.
-- Listagem organizada em tabelas visuais.
+Para combater esse cenário, o produtor precisa de estratégias de monitoramento precisas, planejamento eficiente e análise de dados em tempo real para otimizar o uso de colhedoras e reduzir o desperdício.
 
-### 🚜 Registro de Colheitas
-- Acompanhamento de produtividade real vs. esperada.
-- Registro de métodos de colheita (Manual ou Mecânico).
-- Cálculo automático de perdas em toneladas, percentual e prejuízo financeiro (R$).
-- Alertas visuais para perdas acima da referência técnica.
+## 💡 A Solução: FarmTech Cana
 
-### 📊 Relatórios Inteligentes
-- **Geral de Perdas**: Visão consolidada de toda a produção.
-- **Comparativo de Métodos**: Análise de eficiência entre colheita manual e mecânica.
-- **Top 5 Prejuízos**: Identificação rápida dos talhões com maior impacto financeiro.
+O **FarmTech Cana** surge como uma ferramenta de **Agrotech** focada em transformar dados de campo em decisões estratégicas. O sistema permite ao gestor rural:
 
-### 🗄️ Integração Oracle Database
-- Persistência robusta em banco de dados relacional.
-- Sincronização automática de cadastros e registros de colheita.
-- Consultas formatadas diretamente do banco.
+1.  **Monitorar Precisamente**: Registrar cada colheita, comparando a produtividade esperada com a real.
+2.  **Identificar Gargalos**: Calcular automaticamente o percentual de perda e o prejuízo financeiro causado por ineficiências.
+3.  **Alertar Desvios**: O sistema emite avisos imediatos quando as perdas ultrapassam as referências técnicas (5% para manual e 15% para mecânico).
+4.  **Análise Comparativa**: Gerar relatórios que permitem avaliar se a mecanização está operando dentro dos padrões de eficiência ou se necessita de ajustes.
 
 ---
 
-## 🎨 Interface Premium (Terminal)
+## 🛠️ Funcionalidades Técnicas
 
-O sistema utiliza a biblioteca **Rich** para entregar uma experiência de usuário (UX) diferenciada no terminal, focando nos padrões:
-- **Tema Verde e Amarelo**: Identidade visual limpa e conectada ao setor agrícola.
-- **Tabelas e Painéis**: Organização visual superior para dados complexos.
-- **Fluxo Limpo**: Limpeza automática de tela para manter o foco na tarefa atual.
+Desenvolvido em conformidade com as exigências acadêmicas, o sistema integra:
+- **Gestão de Talhões**: Cadastro completo com UUID, variedades de cana e área produtiva.
+- **Registro de Colheitas**: Entrada de dados com validação rigorosa (evitando erros de digitação).
+- **Relatórios Avançados**: Gráficos e tabelas térmicas no terminal para visualização de ineficiências.
+- **Base de Dados Robusta**: Persistência dupla via **JSON** (local) e **Oracle Database** (nuvem/corporativo).
+- **Logs de Auditoria**: Registro de todas as operações em arquivo de texto.
 
 ---
 
-## 🛠️ Requisitos e Instalação
+## 🎨 Interface e Usabilidade
+
+O sistema utiliza a biblioteca **Rich** para oferecer uma experiência de **Agrotech moderna**:
+- **Interface Verde e Amarelo**: Identificando-se com o agronegócio brasileiro.
+- **Limpeza de Fluxo**: Terminal otimizado com limpeza de tela e menus dinâmicos.
+- **Tabelas Organizadas**: Visualização clara de dados complexos diretamente no prompt de comando.
+
+---
+
+## ⚙️ Instalação e Configuração
 
 ### Requisitos
-- **Python 3.10+**
-- **Oracle Instant Client** (necessário para a biblioteca `oracledb`)
+- **Python 3.10+** (utilize o comando `py` no Windows).
+- **Oracledb library** e acesso a uma instância Oracle.
 
-### Instalação
+### Passo a Passo
 
-1. **Clone o repositório:**
-   ```bash
-   git clone https://github.com/AntunyDev/FarmTech-Cana.git
-   cd FarmTech-Cana
-   ```
-
-2. **Instale as dependências:**
+1. **Instale as dependências:**
    ```bash
    py -m pip install -r requirements.txt
    ```
 
-3. **Configure as Variáveis de Ambiente:**
-   Crie um arquivo `.env` na raiz do projeto com as suas credenciais Oracle:
+2. **Configure o Banco de Dados:**
+   Crie um arquivo `.env` com:
    ```env
    DB_USER=seu_usuario
    DB_PASSWORD=sua_senha
    DB_DSN=localhost:1521/xe
    ```
 
-4. **Execute o sistema:**
+3. **Inicie o Sistema:**
    ```bash
    py main.py
    ```
 
 ---
 
-## 📁 Estrutura do Projeto
+## 🎓 Sobre o Projeto
+Este software foi desenvolvido como parte das atividades acadêmicas da **FIAP**, aplicando conceitos avançados de subalgoritmos, estruturas de dados, persistência de arquivos e conectividade com bancos de dados relacionais para resolver problemas reais do agronegócio brasileiro.
 
-- `main.py`: Ponto de entrada e gerenciamento de menus.
-- `modulos/`:
-  - `talhoes.py`: Lógica de gerenciamento de áreas de plantio.
-  - `colheitas.py`: Registro e cálculos de produtividade.
-  - `relatorios.py`: Processamento de dados e geração de estatísticas.
-  - `banco.py`: Conectividade e comandos SQL para o Oracle.
-  - `persistencia.py`: Salvamento local (JSON) e logs de operação.
-
----
-
-## 👨‍💻 Autor
-
-Desenvolvido como projeto para a **FIAP**.
-
+**Desenvolvedor:**
 *   **Antuny Marques** - [GitHub](https://github.com/AntunyDev)

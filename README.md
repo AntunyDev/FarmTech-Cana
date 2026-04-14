@@ -51,6 +51,20 @@ Desenvolvido para gerenciar a cadeia produtiva, o sistema integra:
 
 ---
 
+## 📁 Estrutura de pastas
+
+Dentre os arquivos e pastas presentes na raiz do projeto, definem-se:
+
+- <b>.github</b>: Arquivos de configuração específicos do GitHub.
+- <b>assets</b>: Imagens e elementos visuais.
+- <b>config</b>: Arquivos de configuração (`.env` e `requirements.txt`).
+- <b>documents</b>: Documentação e arquivos de dados (`dados.json`). Na subpasta "other", estão os logs.
+- <b>scripts</b>: Scripts auxiliares.
+- <b>src</b>: Todo o código fonte (`main.py` e módulos).
+- <b>README.md</b>: Guia geral do projeto.
+
+---
+
 ## 🎨 Interface e Usabilidade (Tema Verde e Amarelo)
 
 O sistema oferece uma experiência de **Agrotech moderna**:
@@ -70,12 +84,13 @@ O sistema oferece uma experiência de **Agrotech moderna**:
 
 1. **Instale as dependências:**
    ```bash
-   py -m pip install -r requirements.txt
+   py -m pip install -r config/requirements.txt
    ```
 
 2. **Execute o sistema:**
+   A partir da raiz do projeto:
    ```bash
-   py main.py
+   py src/main.py
    ```
 
 ---

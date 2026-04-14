@@ -2,8 +2,10 @@ import json
 import os
 from datetime import datetime
 
-ARQUIVO_JSON = "dados.json"
-ARQUIVO_LOG  = "log.txt"
+from pathlib import Path
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+ARQUIVO_JSON = BASE_DIR / "documents" / "dados.json"
+ARQUIVO_LOG  = BASE_DIR / "documents" / "other" / "log.txt"
 
 from rich import print as rprint
 

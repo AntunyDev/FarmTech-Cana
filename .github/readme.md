@@ -1,0 +1,1 @@
+.github: Nesta pasta ficaro os arquivos de configurao especficos do GitHub.

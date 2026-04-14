@@ -1,0 +1,1 @@
+assets: aqui esto os arquivos relacionados a elementos no-estruturados deste repositrio, como imagens.

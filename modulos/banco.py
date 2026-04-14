@@ -4,9 +4,7 @@ from dotenv import load_dotenv
 from rich import print as rprint
 from rich.table import Table
 
-from pathlib import Path
-env_path = Path(__file__).resolve().parent.parent.parent / "config" / ".env"
-load_dotenv(dotenv_path=env_path)
+load_dotenv()
 
 DB_USER     = os.getenv("DB_USER")
 DB_PASSWORD = os.getenv("DB_PASSWORD")

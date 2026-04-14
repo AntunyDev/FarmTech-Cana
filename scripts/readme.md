@@ -1,1 +1,0 @@
-scripts: Posicione aqui scripts auxiliares para tarefas especficas do seu projeto.

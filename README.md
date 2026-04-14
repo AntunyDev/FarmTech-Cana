@@ -100,10 +100,10 @@ O sistema oferece uma experiência de **Agrotech moderna**:
 * **0.1.2 - 14/04/2026**
     * Implementação da lógica de gestão e interface Rich.
     * Estruturação simplificada com foco em usabilidade.
-* **0.1.1 - 12/04/2026**
+* **0.1.1 - 13/04/2026**
     * Melhorias na lógica e funcionalidades gerais.
     * Correção de erros e bugs e adição de validação de entradas de dados.
-* **0.1.0 - 13/04/2026**
+* **0.1.0 - 12/04/2026**
     * Desenvolvimento Inicial do projeto, estruturação e planejamento.
     * Desenvolvimentos das Principais funções.
 

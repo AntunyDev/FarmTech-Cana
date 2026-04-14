@@ -1,34 +1,62 @@
 from modulos.talhoes import cadastrar_talhao, listar_talhoes, remover_talhao
 from modulos.colheitas import registrar_colheita, listar_colheitas, colheitas_por_talhao
-from modulos.relatorios import relatorio_perdas_geral, relatorio_por_metodo, relatorio_prejuizo
+from modulos.relatorios import (
+    relatorio_perdas_geral,
+    relatorio_por_metodo,
+    relatorio_prejuizo,
+)
 from modulos.persistencia import salvar_dados, carregar_dados, registrar_log
-from modulos.banco import inicializar_banco, salvar_talhao, salvar_colheita, listar_talhoes_bd, listar_colheitas_bd
+from modulos.banco import (
+    inicializar_banco,
+    salvar_talhao,
+    salvar_colheita,
+    listar_talhoes_bd,
+    listar_colheitas_bd,
+)
+from rich.console import Console
+from rich.panel import Panel
+from rich import print as rprint
 
-estado = {
-    "talhoes": {},
-    "colheitas": [],
-    "historico": []
-}
+console = Console()
+
+
+def limpar_terminal():
+    import os
+
+    os.system("cls" if os.name == "nt" else "clear")
+
+
+estado = {"talhoes": {}, "colheitas": [], "historico": []}
 
 
 def menu_talhoes():
     while True:
-        print("\n--- GESTÃO DE TALHÕES ---")
-        print("[1] Cadastrar talhão")
-        print("[2] Listar talhões")
-        print("[3] Remover talhão")
-        print("[0] Voltar")
-        opcao = input("Opção: ").strip()
+        limpar_terminal()
+        rprint(
+            Panel(
+                "[bold yellow]GESTÃO DE TALHÕES[/bold yellow]",
+                border_style="green",
+                expand=False,
+            )
+        )
+        rprint("[bold yellow][1][/bold yellow] [green]Cadastrar talhão[/green]")
+        rprint("[bold yellow][2][/bold yellow] [green]Listar talhões[/green]")
+        rprint("[bold yellow][3][/bold yellow] [green]Remover talhão[/green]")
+        rprint("[bold yellow][0][/bold yellow] [yellow]Voltar[/yellow]")
+        opcao = input("\nOpção: ").strip()
 
         if opcao == "1":
             talhao = cadastrar_talhao(estado["talhoes"])
             if talhao:
                 salvar_talhao(talhao)
                 salvar_dados(estado)
-                registrar_log(estado["historico"], f"Talhão '{talhao['nome']}' cadastrado.")
+                registrar_log(
+                    estado["historico"], f"Talhão '{talhao['nome']}' cadastrado."
+                )
 
         elif opcao == "2":
             listar_talhoes(estado["talhoes"])
+            input("\nPressione Enter para continuar...")
 
         elif opcao == "3":
             remover_talhao(estado["talhoes"])
@@ -44,12 +72,21 @@ def menu_talhoes():
 
 def menu_colheitas():
     while True:
-        print("\n--- REGISTRO DE COLHEITAS ---")
-        print("[1] Registrar colheita")
-        print("[2] Listar todas as colheitas")
-        print("[3] Colheitas por talhão")
-        print("[0] Voltar")
-        opcao = input("Opção: ").strip()
+        limpar_terminal()
+        rprint(
+            Panel(
+                "[bold yellow]REGISTRO DE COLHEITAS[/bold yellow]",
+                border_style="green",
+                expand=False,
+            )
+        )
+        rprint("[bold yellow][1][/bold yellow] [green]Registrar colheita[/green]")
+        rprint(
+            "[bold yellow][2][/bold yellow] [green]Listar todas as colheitas[/green]"
+        )
+        rprint("[bold yellow][3][/bold yellow] [green]Colheitas por talhão[/green]")
+        rprint("[bold yellow][0][/bold yellow] [yellow]Voltar[/yellow]")
+        opcao = input("\nOpção: ").strip()
 
         if opcao == "1":
             registrar_colheita(estado["talhoes"], estado["colheitas"])
@@ -60,9 +97,11 @@ def menu_colheitas():
 
         elif opcao == "2":
             listar_colheitas(estado["colheitas"])
+            input("\nPressione Enter para continuar...")
 
         elif opcao == "3":
             colheitas_por_talhao(estado["talhoes"], estado["colheitas"])
+            input("\nPressione Enter para continuar...")
 
         elif opcao == "0":
             break
@@ -73,21 +112,35 @@ def menu_colheitas():
 
 def menu_relatorios():
     while True:
-        print("\n--- RELATÓRIOS ---")
-        print("[1] Relatório geral de perdas")
-        print("[2] Comparativo manual vs mecânico")
-        print("[3] Top 5 maiores prejuízos")
-        print("[0] Voltar")
-        opcao = input("Opção: ").strip()
+        limpar_terminal()
+        rprint(
+            Panel(
+                "[bold yellow]RELATÓRIOS[/bold yellow]",
+                border_style="green",
+                expand=False,
+            )
+        )
+        rprint(
+            "[bold yellow][1][/bold yellow] [green]Relatório geral de perdas[/green]"
+        )
+        rprint(
+            "[bold yellow][2][/bold yellow] [green]Comparativo manual vs mecânico[/green]"
+        )
+        rprint("[bold yellow][3][/bold yellow] [green]Top 5 maiores prejuízos[/green]")
+        rprint("[bold yellow][0][/bold yellow] [yellow]Voltar[/yellow]")
+        opcao = input("\nOpção: ").strip()
 
         if opcao == "1":
             relatorio_perdas_geral(estado["colheitas"])
+            input("\nPressione Enter para continuar...")
 
         elif opcao == "2":
             relatorio_por_metodo(estado["colheitas"])
+            input("\nPressione Enter para continuar...")
 
         elif opcao == "3":
             relatorio_prejuizo(estado["colheitas"])
+            input("\nPressione Enter para continuar...")
 
         elif opcao == "0":
             break
@@ -98,17 +151,26 @@ def menu_relatorios():
 
 def menu_banco():
     while True:
-        print("\n--- BANCO DE DADOS ORACLE ---")
-        print("[1] Consultar talhões")
-        print("[2] Consultar colheitas")
-        print("[0] Voltar")
-        opcao = input("Opção: ").strip()
+        limpar_terminal()
+        rprint(
+            Panel(
+                "[bold yellow]BANCO DE DADOS ORACLE[/bold yellow]",
+                border_style="green",
+                expand=False,
+            )
+        )
+        rprint("[bold yellow][1][/bold yellow] [green]Consultar talhões[/green]")
+        rprint("[bold yellow][2][/bold yellow] [green]Consultar colheitas[/green]")
+        rprint("[bold yellow][0][/bold yellow] [yellow]Voltar[/yellow]")
+        opcao = input("\nOpção: ").strip()
 
         if opcao == "1":
             listar_talhoes_bd()
+            input("\nPressione Enter para continuar...")
 
         elif opcao == "2":
             listar_colheitas_bd()
+            input("\nPressione Enter para continuar...")
 
         elif opcao == "0":
             break
@@ -119,14 +181,23 @@ def menu_banco():
 
 def menu_principal():
     while True:
-        print("\n=== FarmTech Cana ===")
-        print("[1] Gestão de Talhões")
-        print("[2] Registro de Colheitas")
-        print("[3] Relatórios")
-        print("[4] Banco de Dados Oracle")
-        print("[5] Histórico de operações")
-        print("[0] Sair")
-        opcao = input("Opção: ").strip()
+        limpar_terminal()
+        rprint(
+            """[bold yellow]
+███████╗░█████╗░██████╗░███╗░░░███╗████████╗███████╗░█████╗░██╗░░██╗  ░░░░░░  ░█████╗░██████╗░░█████╗░░█████╗░
+██╔════╝██╔══██╗██╔══██╗████╗░████║╚══██╔══╝██╔════╝██╔══██╗██║░░██║  ░░░░░░  ██╔══██╗██╔══██╗██╔══██╗██╔══██╗
+█████╗░░███████║██████╔╝██╔████╔██║░░░██║░░░█████╗░░██║░░╚═╝███████║  █████╗  ██║░░╚═╝██████╔╝██║░░╚═╝███████║
+██╔══╝░░██╔══██║██╔══██╗██║╚██╔╝██║░░░██║░░░██╔══╝░░██║░░██╗██╔══██║  ╚════╝  ██║░░██╗██╔═══╝░██║░░██╗██╔══██║
+██║░░░░░██║░░██║██║░░██║██║░╚═╝░██║░░░██║░░░███████╗╚█████╔╝██║░░██║  ░░░░░░  ╚█████╔╝██║░░░░░╚█████╔╝██║░░██║
+╚═╝░░░░░╚═╝░░╚═╝╚═╝░░╚═╝╚═╝░░░░░╚═╝░░░╚═╝░░░╚══════╝░╚════╝░╚═╝░░╚═╝  ░░░░░░  ░╚════╝░╚═╝░░░░░░╚════╝░╚═╝░░╚═╝[/bold yellow]\n"""
+        )
+        rprint("[bold yellow][1][/bold yellow] [green]Gestão de Talhões[/green]")
+        rprint("[bold yellow][2][/bold yellow] [green]Registro de Colheitas[/green]")
+        rprint("[bold yellow][3][/bold yellow] [green]Relatórios[/green]")
+        rprint("[bold yellow][4][/bold yellow] [green]Banco de Dados Oracle[/green]")
+        rprint("[bold yellow][5][/bold yellow] [green]Histórico de operações[/green]")
+        rprint("[bold yellow][0][/bold yellow] [yellow]Sair[/yellow]")
+        opcao = input("\nOpção: ").strip()
 
         if opcao == "1":
             menu_talhoes()
@@ -142,19 +213,28 @@ def menu_principal():
 
         elif opcao == "5":
             if not estado["historico"]:
-                print("Nenhuma operação registrada.")
+                rprint("[yellow]Nenhuma operação registrada.[/yellow]")
             else:
-                print("\n--- HISTÓRICO ---")
+                rprint(
+                    Panel(
+                        "[bold yellow]HISTÓRICO[/bold yellow]",
+                        border_style="green",
+                        expand=False,
+                    )
+                )
                 for entrada in estado["historico"]:
-                    print(f"{entrada['timestamp']}  {entrada['mensagem']}")
+                    rprint(
+                        f"[green]{entrada['timestamp']}[/green]  [yellow]{entrada['mensagem']}[/yellow]"
+                    )
+                input("\nPressione Enter para continuar...")
 
         elif opcao == "0":
             salvar_dados(estado)
-            print("Dados salvos. Até logo!")
+            rprint("[bold green]Dados salvos. Até logo![/bold green]")
             break
 
         else:
-            print("Opção inválida.")
+            rprint("[bold yellow]Opção inválida.[/bold yellow]")
 
 
 if __name__ == "__main__":
@@ -162,7 +242,7 @@ if __name__ == "__main__":
 
     dados_salvos = carregar_dados()
     if dados_salvos:
-        estado["talhoes"]   = dados_salvos.get("talhoes", {})
+        estado["talhoes"] = dados_salvos.get("talhoes", {})
         estado["colheitas"] = dados_salvos.get("colheitas", [])
         estado["historico"] = dados_salvos.get("historico", [])
 

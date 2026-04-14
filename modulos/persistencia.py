@@ -6,10 +6,12 @@ ARQUIVO_JSON = "dados.json"
 ARQUIVO_LOG  = "log.txt"
 
 
+from rich import print as rprint
+
 def salvar_dados(estado):
     with open(ARQUIVO_JSON, "w", encoding="utf-8") as f:
         json.dump(estado, f, ensure_ascii=False, indent=4)
-    print("Dados salvos com sucesso.")
+    rprint("[bold yellow]Dados salvos com sucesso.[/bold yellow]")
 
 
 def carregar_dados():

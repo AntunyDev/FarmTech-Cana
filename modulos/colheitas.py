@@ -1,5 +1,8 @@
 from modulos.talhoes import buscar_talhao_por_id
 from datetime import datetime
+from rich import print as rprint
+from rich.table import Table
+from rich.panel import Panel
 
 METODOS_COLHEITA = ("Manual", "Mecânico")
 
@@ -56,9 +59,9 @@ def registrar_colheita(talhoes, colheitas):
 
     print(f"Talhão encontrado: {talhao['nome']} ({talhao['area_ha']} ha)\n")
 
-    print("Métodos de colheita:")
+    rprint("[bold yellow]Métodos de colheita:[/bold yellow]")
     for i, m in enumerate(METODOS_COLHEITA, 1):
-        print(f"  [{i}] {m}")
+        rprint(f"  [bold yellow][{i}][/bold yellow] [green]{m}[/green]")
     idx = _validar_inteiro("Escolha o método: ", opcoes=range(1, len(METODOS_COLHEITA) + 1))
     metodo = METODOS_COLHEITA[idx - 1]
 
@@ -75,13 +78,15 @@ def registrar_colheita(talhoes, colheitas):
     prejuizo = round(perda_toneladas * preco_tonelada, 2)
 
     if perda_percentual > referencia:
-        print(f"\nAVISO: Perda acima da referência para colheita {metodo.lower()} ({referencia}%)!")
+        rprint(f"\n[bold yellow]AVISO: Perda acima da referência para colheita {metodo.lower()} ({referencia}%)![/bold yellow]")
 
-    print(f"\nResumo:")
-    print(f"  Produção esperada : {producao_esperada} t")
-    print(f"  Perda             : {perda_toneladas} t ({perda_percentual}%)")
-    print(f"  Produção real     : {producao_real} t")
-    print(f"  Prejuízo estimado : R$ {prejuizo}")
+    resumo = (
+        f"Produção esperada : [bold yellow]{producao_esperada}[/bold yellow] t\n"
+        f"Perda             : [bold yellow]{perda_toneladas}[/bold yellow] t ([bold yellow]{perda_percentual}%[/bold yellow])\n"
+        f"Produção real     : [bold green]{producao_real}[/bold green] t\n"
+        f"Prejuízo estimado : [bold yellow]R$ {prejuizo}[/bold yellow]"
+    )
+    rprint(Panel(resumo, title="Resumo da Colheita", border_style="green", expand=False))
 
     confirmacao = input("\nConfirmar registro? (s/n): ").strip().lower()
     if confirmacao != "s":
@@ -109,13 +114,31 @@ def registrar_colheita(talhoes, colheitas):
 
 def listar_colheitas(colheitas):
     if not colheitas:
-        print("Nenhuma colheita registrada.")
+        rprint("[yellow]Nenhuma colheita registrada.[/yellow]")
         return
 
-    print(f"\n{'ID':<16} {'Talhão':<20} {'Safra':<6} {'Método':<10} {'Prod.Esp.':<12} {'Perda%':<8} {'Prejuízo'}")
-    print("-" * 85)
+    table = Table(title="Registro de Colheitas", header_style="bold yellow", border_style="green")
+    table.add_column("ID", style="yellow", width=16)
+    table.add_column("Talhão", style="green")
+    table.add_column("Safra", style="yellow", justify="center")
+    table.add_column("Método", style="green")
+    table.add_column("Prod.Esp.", style="yellow", justify="right")
+    table.add_column("Perda%", style="yellow", justify="right")
+    table.add_column("Prejuízo", style="bold yellow", justify="right")
+
     for c in colheitas:
-        print(f"{c['id']:<16} {c['talhao_nome']:<20} {c['ano_safra']:<6} {c['metodo']:<10} {c['producao_esperada']:<12} {c['perda_percentual']:<8} R$ {c['prejuizo']}")
+        # Destacar perda alta com estilo diferente de amarelo se necessário, mas mantendo o tema
+        table.add_row(
+            c['id'],
+            c['talhao_nome'],
+            str(c['ano_safra']),
+            c['metodo'],
+            f"{c['producao_esperada']:.2f} t",
+            f"{c['perda_percentual']:.2f}%",
+            f"R$ {c['prejuizo']:.2f}"
+        )
+
+    rprint(table)
 
 
 def colheitas_por_talhao(talhoes, colheitas):

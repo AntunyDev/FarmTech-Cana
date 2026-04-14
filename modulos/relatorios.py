@@ -1,3 +1,7 @@
+from rich import print as rprint
+from rich.table import Table
+from rich.panel import Panel
+
 def relatorio_perdas_geral(colheitas):
     if not colheitas:
         print("Nenhuma colheita registrada.")
@@ -9,12 +13,14 @@ def relatorio_perdas_geral(colheitas):
     total_prejuizo = sum(c["prejuizo"]           for c in colheitas)
     media_perda    = (total_perda / total_esperado) * 100
 
-    print("\n--- RELATÓRIO GERAL DE PERDAS ---")
-    print(f"Produção esperada total : {total_esperado:.2f} t")
-    print(f"Produção real total     : {total_real:.2f} t")
-    print(f"Perda total             : {total_perda:.2f} t")
-    print(f"Média de perda          : {media_perda:.2f}%")
-    print(f"Prejuízo total          : R$ {total_prejuizo:.2f}")
+    conteudo = (
+        f"Produção esperada total : [bold yellow]{total_esperado:.2f}[/bold yellow] t\n"
+        f"Produção real total     : [bold green]{total_real:.2f}[/bold green] t\n"
+        f"Perda total             : [bold yellow]{total_perda:.2f}[/bold yellow] t\n"
+        f"Média de perda          : [bold yellow]{media_perda:.2f}%[/bold yellow]\n"
+        f"Prejuízo total          : [bold yellow]R$ {total_prejuizo:.2f}[/bold yellow]"
+    )
+    rprint(Panel(conteudo, title="[bold yellow]RELATÓRIO GERAL DE PERDAS[/bold yellow]", border_style="green", expand=False))
 
 
 def relatorio_por_metodo(colheitas):
@@ -37,15 +43,26 @@ def relatorio_por_metodo(colheitas):
         grupos[metodo]["total_perda"]     += c["perda_toneladas"]
         grupos[metodo]["total_prejuizo"]  += c["prejuizo"]
 
-    print("\n--- COMPARATIVO: MANUAL vs MECÂNICO ---")
+    table = Table(title="Comparativo: Manual vs Mecânico", header_style="bold yellow", border_style="green")
+    table.add_column("Método", style="green")
+    table.add_column("Registros", style="yellow", justify="center")
+    table.add_column("Prod. Esperada", style="yellow", justify="right")
+    table.add_column("Perda Ton", style="yellow", justify="right")
+    table.add_column("Perda %", style="yellow", justify="right")
+    table.add_column("Prejuízo Total", style="bold yellow", justify="right")
+
     for metodo, dados in grupos.items():
         media = (dados["total_perda"] / dados["total_esperado"]) * 100
-        print(f"\nMétodo: {metodo}")
-        print(f"  Colheitas registradas : {dados['quantidade']}")
-        print(f"  Produção esperada     : {dados['total_esperado']:.2f} t")
-        print(f"  Perda total           : {dados['total_perda']:.2f} t")
-        print(f"  Média de perda        : {media:.2f}%")
-        print(f"  Prejuízo total        : R$ {dados['total_prejuizo']:.2f}")
+        table.add_row(
+            metodo,
+            str(dados["quantidade"]),
+            f"{dados['total_esperado']:.2f} t",
+            f"{dados['total_perda']:.2f} t",
+            f"{media:.2f}%",
+            f"R$ {dados['total_prejuizo']:.2f}"
+        )
+    
+    rprint(table)
 
 
 def relatorio_prejuizo(colheitas):
@@ -55,8 +72,20 @@ def relatorio_prejuizo(colheitas):
 
     top5 = sorted(colheitas, key=lambda c: c["prejuizo"], reverse=True)[:5]
 
-    print("\n--- TOP 5 MAIORES PREJUÍZOS ---")
-    print(f"\n{'Talhão':<20} {'Safra':<6} {'Método':<10} {'Perda%':<8} {'Prejuízo'}")
-    print("-" * 60)
+    table = Table(title="Top 5 Maiores Prejuízos", header_style="bold yellow", border_style="green")
+    table.add_column("Talhão", style="green")
+    table.add_column("Safra", style="yellow", justify="center")
+    table.add_column("Método", style="green")
+    table.add_column("Perda %", style="yellow", justify="right")
+    table.add_column("Prejuízo", style="bold yellow", justify="right")
+
     for c in top5:
-        print(f"{c['talhao_nome']:<20} {c['ano_safra']:<6} {c['metodo']:<10} {c['perda_percentual']:<8} R$ {c['prejuizo']:.2f}")
+        table.add_row(
+            c['talhao_nome'],
+            str(c['ano_safra']),
+            c['metodo'],
+            f"{c['perda_percentual']:.2f}%",
+            f"R$ {c['prejuizo']:.2f}"
+        )
+    
+    rprint(table)

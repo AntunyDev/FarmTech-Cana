@@ -1,6 +1,8 @@
 import oracledb
 import os
 from dotenv import load_dotenv
+from rich import print as rprint
+from rich.table import Table
 
 load_dotenv()
 
@@ -14,7 +16,7 @@ def conectar():
         conexao = oracledb.connect(user=DB_USER, password=DB_PASSWORD, dsn=DB_DSN)
         return conexao
     except oracledb.DatabaseError as e:
-        print(f"Erro ao conectar no banco: {e}")
+        rprint(f"[bold yellow]Erro ao conectar no banco:[/bold yellow] [green]{e}[/green]")
         return None
 
 
@@ -71,10 +73,10 @@ def inicializar_banco():
         )
 
         conexao.commit()
-        print("Banco inicializado com sucesso.")
+        rprint("[bold green]Banco inicializado com sucesso.[/bold green]")
 
     except oracledb.DatabaseError as e:
-        print(f"Erro ao inicializar banco: {e}")
+        rprint(f"[bold yellow]Erro ao inicializar banco:[/bold yellow] [green]{e}[/green]")
     finally:
         conexao.close()
 
@@ -109,10 +111,10 @@ def salvar_talhao(talhao):
             },
         )
         conexao.commit()
-        print("Talhão salvo no banco.")
+        rprint("[bold green]Talhão salvo no banco.[/bold green]")
 
     except oracledb.DatabaseError as e:
-        print(f"Erro ao salvar talhão: {e}")
+        rprint(f"[bold yellow]Erro ao salvar talhão:[/bold yellow] [green]{e}[/green]")
     finally:
         conexao.close()
 
@@ -157,10 +159,10 @@ def salvar_colheita(colheita):
             },
         )
         conexao.commit()
-        print("Colheita salva no banco.")
+        rprint("[bold green]Colheita salva no banco.[/bold green]")
 
     except oracledb.DatabaseError as e:
-        print(f"Erro ao salvar colheita: {e}")
+        rprint(f"[bold yellow]Erro ao salvar colheita:[/bold yellow] [green]{e}[/green]")
     finally:
         conexao.close()
 
@@ -178,17 +180,28 @@ def listar_talhoes_bd():
         linhas = cursor.fetchall()
 
         if not linhas:
-            print("Nenhum talhão no banco de dados.")
+            rprint("[yellow]Nenhum talhão no banco de dados.[/yellow]")
             return
 
-        print(
-            f"\n{'ID':<10} {'Nome':<20} {'Área':<10} {'Variedade':<12} {'Município':<20} {'Plantio'}"
-        )
-        print("-" * 80)
+        table = Table(title="Talhões no Banco de Dados Oracle", header_style="bold yellow", border_style="green")
+        table.add_column("ID", style="yellow")
+        table.add_column("Nome", style="green")
+        table.add_column("Área", style="yellow", justify="right")
+        table.add_column("Variedade", style="green")
+        table.add_column("Município", style="green")
+        table.add_column("Plantio", style="yellow", justify="center")
+
         for linha in linhas:
-            print(
-                f"{linha[0]:<10} {linha[1]:<20} {linha[2]:<10} {linha[3]:<12} {linha[4]:<20} {linha[5]}"
+            table.add_row(
+                linha[0], 
+                linha[1], 
+                f"{linha[2]:.2f} ha", 
+                linha[3], 
+                linha[4], 
+                str(linha[5])
             )
+        
+        rprint(table)
 
     except oracledb.DatabaseError as e:
         print(f"Erro ao consultar talhões: {e}")
@@ -214,17 +227,30 @@ def listar_colheitas_bd():
         linhas = cursor.fetchall()
 
         if not linhas:
-            print("Nenhuma colheita no banco de dados.")
+            rprint("[yellow]Nenhuma colheita no banco de dados.[/yellow]")
             return
 
-        print(
-            f"\n{'ID':<16} {'Talhão':<20} {'Safra':<6} {'Método':<10} {'Prod.Esp.':<12} {'Perda%':<8} {'Prejuízo'}"
-        )
-        print("-" * 85)
+        table = Table(title="Colheitas no Banco de Dados Oracle", header_style="bold yellow", border_style="green")
+        table.add_column("ID", style="yellow")
+        table.add_column("Talhão", style="green")
+        table.add_column("Safra", style="yellow", justify="center")
+        table.add_column("Método", style="green")
+        table.add_column("Prod.Esp.", style="yellow", justify="right")
+        table.add_column("Perda%", style="yellow", justify="right")
+        table.add_column("Prejuízo", style="bold yellow", justify="right")
+
         for linha in linhas:
-            print(
-                f"{linha[0]:<16} {linha[1]:<20} {linha[2]:<6} {linha[3]:<10} {linha[4]:<12} {linha[5]:<8} R$ {linha[6]:.2f}"
+            table.add_row(
+                linha[0],
+                linha[1],
+                str(linha[2]),
+                linha[3],
+                f"{linha[4]:.2f} t",
+                f"{linha[5]:.2f}%",
+                f"R$ {linha[6]:.2f}"
             )
+        
+        rprint(table)
 
     except oracledb.DatabaseError as e:
         print(f"Erro ao consultar colheitas: {e}")

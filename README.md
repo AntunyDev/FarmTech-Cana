@@ -95,6 +95,26 @@ O sistema oferece uma experiência de **Agrotech moderna**:
 
 ---
 
+## ✅ Atendimento aos Requisitos da Atividade (Cap. 3 ao 6)
+
+Este projeto foi desenhado sob medida para atender a todos os critérios da avaliação de **Gestão do Agronegócio em Python**:
+
+- [x] **Área do Agronegócio Clara:** Foco no monitoramento e redução de perdas na colheita mecanizada de cana-de-açúcar (dor real de mercado estipulada no README).
+- [x] **Subalgoritmos:** Uso extensivo de funções e procedimentos com passagem de parâmetros. 
+  - *Exemplo:* `calcular_perda(producao_esperada, perda_percentual)` em `colheitas.py` retornando os cálculos operacionais e `listar_talhoes(talhoes)` atuando como procedimento de fluxo.
+- [x] **Estruturas de Dados Abordadas:**
+  - **Dicionários e Tabelas de Memória:** O estado completo transita na memória antes de ser salvo (ex: `estado = {"talhoes": {}, "colheitas": [], "historico": []}`).
+  - **Listas:** Armazenamento em array das colheitas globais.
+  - **Tuplas:** Garantindo a integridade e prevenindo alterações no código estático com constantes como `VARIEDADES_CANA` e `METODOS_COLHEITA`.
+- [x] **Manipulação de Arquivos (Texto e JSON):** O estado possui persistência de arquivos.
+  - *JSON:* Consolidado transacional armazenado na raiz em `dados.json`.
+  - *Texto:* Tracking de log da aplicação em modo *append* no arquivo texto `log.txt`.
+- [x] **Conexão com Banco de Dados Oracle:** O módulo `banco.py` gerencia a ingestão chamando a biblioteca `oracledb`, isolando as variáveis `.env` e utilizando conceito de `MERGE` em SQL para evitar replicação de dados.
+- [x] **Consistir as Entradas do Usuário:** Impossibilita o usuário quebrar o app ao digitar letras ou formatações indesejadas em perguntas, os métodos `_validar_float` limitam inclusive tamanhos `min / max` via exceções nativas.
+- [x] **Apresentação Limpa (Usabilidade):** Com base técnica sólida pela importação da framework **Rich**, as impressões deixam a caótica visualização padrão de prompt e assumem um grid profissional, limpo (graças as limpezas de stdout de terminal) com o esquema visual baseado em cores padronizadas Agro.
+
+---
+
 ## 🗃 Histórico de lançamentos
 
 * **0.1.2 - 14/04/2026**

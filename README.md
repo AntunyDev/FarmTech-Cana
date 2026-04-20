@@ -116,7 +116,8 @@ Este projeto foi desenhado sob medida para atender a todos os critérios da aval
 ---
 
 ## 🗃 Histórico de lançamentos
-
+* **0.1.3 - 20/04/2026**
+    * Atualização do README.md.
 * **0.1.2 - 14/04/2026**
     * Implementação da lógica de gestão e interface Rich.
     * Estruturação simplificada com foco em usabilidade.
